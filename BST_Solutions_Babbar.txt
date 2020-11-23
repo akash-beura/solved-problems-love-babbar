@@ -1,0 +1,210 @@
+1. Find a value in a BST
+
+boolean search(Node root, int target){
+	if(root == null)
+		return false;
+	if(target == root.data)
+		return true;
+		
+	if(target < root.data)
+		return search(root.left, target);
+	if(target > root.data)
+		return search(root.righ, target);
+}
+
+2. Delete a node
+
+Node delete(Node root, int data){
+	
+	if(data < root.data){
+		root.left = delete(root.left, data);
+	} else if(data > root.data){
+		root.right = delete(root.right, data);
+	} else{
+	
+		if(root.left == null && root.right == null){
+			return null;
+		} else if(root.left == null){
+			return root.right;
+		} else if(root.right == null){
+			return root.left;
+		} else{
+			Node temp = findMax(root.left);
+			root.data = temp;
+			root.left = delete(root.left, temp.data);
+		}
+	}
+	return root;
+}
+
+
+Q3. Find min and max in a BST
+
+	int findMin(Node root){
+		if(root == null)
+			return -1;
+		Node temp = root;
+		while(temp.left!=null){
+			temp = temp.left; 
+		}
+		return temp.data;
+	}
+	
+	int findMax(Node root){
+		if(root == null)
+			return -1;
+		Node temp = root;
+		while(temp.right!=null){
+			temp = temp.right; 
+		}
+		return temp.data;
+	}
+	
+Q5. Check if a tree is a BST or not
+
+	boolean check(Node root){
+		if(root == null)
+			return true;
+		if(root.left == null && root.right == null){
+			return true;
+		}
+		
+		if(root.left == null && root.data < root.right.data){
+			return check(root.right);
+		} else if(root.right == null && data > root.left.data){
+			return check(root.left);
+		} else if(root.data > root.left.data && root.data < root.right.data){
+			return check(root.left) && check(root.right);
+		}
+		return false;
+	}
+	
+Q6. Find LCA of the following..
+
+	Node LCA(Node root, int a, int b){
+		if(root == null)
+			return root;
+		else if(root.data == a || root.data == b){
+			return root;
+		}
+		
+		Node left = LCA(root.left, a,b);
+		Node right = LCA(root.left, a,b);
+		
+		if(left !=null && right!=null){
+			return root;
+		}
+		
+		return left==null? right: left;
+	}
+	
+Q7. Find out successor for a node
+
+
+Node find(Node root, int data)
+	if(root == null)
+		return null;
+	else if(data == root.data)
+		return root;
+	else if(data < root.data){
+		return find(root.left, data);
+	else
+		return find(root.right, data);;
+}
+
+
+Node findMin(Node root){
+	Node temp = root;
+	while(temp.left!=null) temp = temp.left;
+	return temp;
+}
+
+Node findSuccessor(Node root, int data){
+	
+	Node current = find(root, data);
+	if(current ==null) return null;
+	
+	if(current.right!=null){
+		Node temp = current.right;
+		while(temp.left!=null) temp = temp.left;
+		return temp;
+	} else {
+		Node ancestor = root;
+		Node successor = null;
+		
+		while(ancestor!=current){
+			if(current.data < ancestor.data){
+				successor = ancestor;
+				ancestor = ancestor.left;
+			} else{
+				ancestor = ancestor.right;
+			}
+		}
+		return successor;
+	}
+}
+
+
+Q) Construct BST from preorder
+
+int position = 0;
+Node construct(Node root, int[] preOrder){
+	if(position >= preOrder.length)
+		return null;
+	else if(preOrder.length == 0)
+		return null;
+	root = new Node(preOrder[position++]);
+	if(preOrder.length == 1)
+		return root;
+	if(preOrder[position] < root.data){
+		root.left = preOrder(root.left, preOrder);
+	} else{
+		root.right = preOrder(root.right, preOrder);
+	}
+	return root;
+}
+
+Q) Merge 2 BSTs
+
+
+List<Integer> inOrderTreeOne = new ArrayList<>();
+List<Integer> inOrderTreeTwo = new ArrayList<>();
+
+void findInOrder(Node root, String tree){
+	if(root == null) return;
+	findInOrder(root.left);
+	if(tree.equals("one")
+		inOrderTreeOne.add(root.data);
+	else 
+		inOrderTreeTwo.add(root.data);
+	findInOrder(root.right);
+}
+
+int []merge(){
+	int m = inOrderTreeOne.size();
+	int n = inOrderTreeTwo.size();
+	int i=0,j=0,k=0;
+	int []result = new int[m+n];
+	
+	while(i<m && j<n){
+		if(inOrderTreeOne.get(i) <= inOrderTreeTwo.get(i)){
+			result[k++] = inOrderTreeOne.get(i++);
+		} else{
+			result[k++] = inOrderTreeOne.get(j++);
+		}
+	}
+	
+	while(i<m){
+		result[k++] = inOrderTreeOne.get(i++);
+	}
+	
+	while(j<n){
+		result[k++] = inOrderTreeTwo.get(j++);
+	}
+	
+	return result;
+}
+
+
+
+

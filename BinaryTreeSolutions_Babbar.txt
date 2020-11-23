@@ -1,0 +1,325 @@
+1. Level Order Traversal
+
+
+int findHeight(Node root){
+	if(root == null)
+		return 0;
+	return Math.max(findHeight(root.left), findHeight(root.right))+1;
+}
+
+
+void helper(Node root){
+	if(root == null)
+		return;
+	int height = findHeight(root);
+	for(int i = 0; i<height; i++){
+			print(root, i);
+	}
+}
+
+void print(Node root, int level){
+	if(root == null)
+		return;
+	if(level == 0)
+		sout(root.data);
+		return;
+	}
+	
+	print(root.left);
+	print(root.right);
+}
+
+========================================================================
+2. Reverse Level Order Traversal
+
+void printReverse(Node root, int level){
+	if(root == null)
+		return;
+	if(level == 0)
+		sout(root.data);
+		return;
+	}
+
+	print(root.right);
+	print(root.left);
+}
+========================================================================
+3. Find Diameter of a Tree
+
+int findDiameter(Node root){
+	if(root == null)
+		return 0;
+	
+	int current = findHeight(root.left) + findHeight(root.right) + 1;
+	
+	return Math.max(findDiameter(root.left), Math.max(findDiameter(root.right), current)) + 1;
+}
+========================================================================
+4. Mirror of a tree
+
+Node makeMirror(Node root, Node mirror){
+	if(root == null)
+		return null;
+	
+	if(mirror == null)
+		mirror = new Node(root.data);
+	
+	mirror.left = makeMirror(root.right, mirror);
+	mirror.right = makeMirror(root.left, mirror);
+	
+	return mirror;
+}
+
+========================================================================
+Q. Left view of a Tree
+
+void printLeft(Node root){
+	if(root == null) return;
+	
+	System.out.println(root.data);
+	if(root.left!=null)
+		printLeft(root.left);
+	else if(root.right!=null){
+		printLeft(root.right);
+	
+}
+
+========================================================================
+Q. right view of a tree
+
+void printRight(Node root){
+	if(root == null) return;
+	
+	System.out.println(root.data);
+	if(root.right!=null)
+		printRight(root.right);
+	else if(root.left!=null){
+		printRight(root.left);
+}
+========================================================================
+Q. Top view...
+
+Map<Integer, Node> map = new HashMap<>();
+
+
+void helper(Node root){
+
+
+}
+
+void BFSUtil(Node root, int md, int level){
+	
+	if(root ==null) return;
+	if(level == 0){
+		if(!map.containsKey(md)){
+			Sytem.out.println(root.data);
+			map.put(md, root);
+		}
+		return;
+	}
+	
+	BFSUtil(root.left, md-1, level-1);
+	BFSUtil(root.right, md+1, level-1);
+}
+
+========================================================================
+Q. Bottom view of a Tree
+
+void bottomView(Node root){
+	if(root == null)
+		return;
+	bottomView(root.left);
+	if(root.left == null && root.right == null){
+		System.out.println(root.data);
+		return;
+	}
+	bottomView(root.right);
+}
+
+========================================================================
+
+Q. Check if tree is balanced or not
+
+boolean checkBalance(Node root){
+	if(root == null)
+		return true;
+	int left  = findHeight(root.data);
+	int right = findHeight(root.data);
+	int dif = Math.abs(right-left);
+	
+	if(dif <= 1){
+		return checkBalance(root.left) && checkBalance(root.right);
+	}
+	return false;
+
+}
+
+
+========================================================================
+:::Boundary Traversal:::
+
+void printLeft(Node root){
+	if(root == null) return;
+	
+	if(root.left != null){
+		sout(root.data);
+		printLeft(root.left);
+	} else if(root.right!=null){
+		sout(root.data);
+		printLeft(root.right);
+	}
+}
+
+void printRight(Node root){
+	if(root == null) return;
+	if(root.right != null){
+		sout(root.data);
+		printRight(root.right);
+	} else if(root.left!=null){
+		sout(root.data);
+		printRight(root.left);
+	}
+}
+
+void printBottom(Node root){
+	if(root == null)
+		return;
+	printBottom(root.left);
+	if(root.left == null && root.right == null){
+		sout(root.data);
+		return;
+	}
+	printBottom(root.right);
+}
+
+
+void printBoundary(Node root){
+	if(root == null)
+		return;
+	sout(root.data);
+	printLeft(root.left);
+	printRight(root.right);
+	printBottom(root.left);
+	printBottom(root.right);
+}
+
+========================================================================
+Q. Construct Binary Tree from String representation
+
+Node construct(String word){
+	return constructFromString(word);
+}
+
+int currentIndex = 0;
+Node constructFromString(String word){
+
+	if(currentIndex >= word.length())
+		return null;
+	
+	boolean negative = false;
+	
+	if(word.charAt(currentIndex) == '-'){
+		negative = true;
+		currentIndex++;
+	}
+	int num = 0;
+	while(currentIndex < word.length() && Character.isDigit(word.charAt(currentIndex)){
+		int digit = Character.NumericValue(word.charAt(currentIndex));
+		num = num * 10 + digit;
+		currentIndex++;
+	}
+
+	Node node = new Node(num);
+	
+	if(currentIndex == word.length()){
+		return node;
+	}
+	
+	if(currentIndex < word.length() && word.charAt(currentIndex) =='('){
+		currentIndex++;
+		root.left = constructFromString(word);
+	}
+	if(currentIndex < word.length() && word.charAt(currentIndex) == ')'){
+		currentIndex++;
+		root.right = constructFromString(word);
+	} 
+	if(currentIndex < word.length() && word.charAt(currentIndex) == '('){
+		currentIndex++;
+		root.right = constructFromString(word);
+	} 
+	if(currentIndex < word.length() && word.charAt(currentIndex) == ')'){
+		currentIndex++;
+		root.left = constructFromString(word);
+	}
+	return root;
+
+}
+
+
+
+========================================================================
+
+Q. convert into double LL
+
+Node prev;
+void convert(Node root){
+	
+	convert(root.left);
+	if(prev == null)
+	{
+		prev = new Node(root.data);
+		return;
+	} else{
+		root.left = prev;
+		prev.right = root;
+		prev = root;
+	}
+	convert(root.right);
+}
+
+
+========================================================================
+Q. Check if 2 trees are mirror
+
+boolean check(Node root1, Node root2){
+	if(root1 == null || root2 == null){
+		return false;
+	} else if(root1 == null && root2 == null){
+		return true;
+	}
+	
+	return (root.data == root2.data) && check(root1.left, root2.right) && check(root1.right, root2.left);
+}
+========================================================================
+Q. check if a is subtree of another
+
+
+boolean checkIfSame(Node root1, Node root2){
+	if(root1 == null || root2 == null){
+		return false;
+	} else if(root1 == null && root2 == null){
+		return true;
+	}
+	return (root.data == root2.data) && check(root1.left, root2.left) && check(root1.right, root2.right);
+}
+
+boolean checkIfSubtree(Node root1, Node root2){
+	if(checkIfSame(root1, root2))
+		return true;
+	return checkIfSame(root.left, root2) || checkIfSame(root.right, root2);
+}
+
+========================================================================
+
+
+
+========================================================================
+========================================================================
+========================================================================
+========================================================================
+========================================================================
+========================================================================
+========================================================================
+========================================================================
+
+
